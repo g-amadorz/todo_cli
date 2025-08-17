@@ -1,9 +1,7 @@
 package todo_cli
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
 	"time"
 )
 
@@ -29,7 +27,7 @@ func (l *TodoList) Add(taskName string) {
 
 func (l *TodoList) Complete(todo int) error {
 	if len(*l) < todo || todo < 1 {
-		fmt.Errorf("Todo: %d was unable to be completed", todo)
+		return fmt.Errorf("Todo: %d was unable to be completed", todo)
 	}
 
 	ls := *l
@@ -42,7 +40,7 @@ func (l *TodoList) Complete(todo int) error {
 
 func (l *TodoList) Delete(todo int) error {
 	if len(*l) < todo || todo < 1 {
-		fmt.Errorf("Todo: %d was unable to be deleted", todo)
+		return fmt.Errorf("Todo: %d was unable to be deleted", todo)
 	}
 
 	ls := *l
