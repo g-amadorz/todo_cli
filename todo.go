@@ -1,7 +1,9 @@
 package todo_cli
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"time"
 )
 
@@ -46,6 +48,28 @@ func (l *TodoList) Delete(todo int) error {
 	ls := *l
 
 	*l = append(ls[:todo-1], ls[todo:]...)
+
+	return nil
+}
+
+func (l *TodoList) Save(filename string) error {
+	if file, err := json.Marshal(l); err != nil {
+		return fmt.Errorf("unable to marshal todo list")
+	} else {
+		return os.WriteFile(filename, file, 0644)
+	}
+}
+
+func (l *TodoList) Open(filename string) error {
+	file, err := os.ReadFile(filename)
+
+	if err != nil {
+		return fmt.Errorf("unable to read file")
+	}
+
+	if err := json.Unmarshal(file, l); err != nil {
+		return fmt.Errorf("failed to parse JSON from %q: %w", filename, err)
+	}
 
 	return nil
 }
