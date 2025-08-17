@@ -1,6 +1,7 @@
 package todo_cli_test
 
 import (
+	"os"
 	"testing"
 	"todo_cli"
 )
@@ -74,5 +75,42 @@ func TestDelete(t *testing.T) {
 
 	if 0 < len(ls) {
 		t.Errorf("Unable to delete task.")
+	}
+}
+
+func TestSaveOpen(t *testing.T) {
+	ls0 := todo_cli.TodoList{}
+	ls1 := todo_cli.TodoList{}
+
+	tasks := []string{
+		"Go on a run",
+		"Bathe",
+		"Code",
+	}
+
+	for _, t := range tasks {
+		ls0.Add(t)
+	}
+
+	tf, err := os.CreateTemp("", "")
+
+	if err != nil {
+		t.Fatalf("Unable to create a temporary file.")
+	}
+
+	defer os.Remove(tf.Name())
+
+	if err := ls0.Save(tf.Name()); err != nil {
+		t.Fatalf("Unable to save list to temporary file %s.", err)
+	}
+
+	if err := ls1.Open(tf.Name()); err != nil {
+		t.Fatalf("Unable to open temporary file")
+	}
+
+	for i := range ls0 {
+		if ls0[i].Task != ls1[i].Task {
+			t.Errorf("Expected %q, received %q.", ls0[i].Task, ls1[i].Task)
+		}
 	}
 }
