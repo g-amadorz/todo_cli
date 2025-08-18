@@ -7,7 +7,7 @@ import (
 	"todo_cli"
 )
 
-const fileName = "todos.json"
+const fileName = ".todos.json"
 
 func main() {
 	list := flag.Bool("list", false, "List all todos")
@@ -17,6 +17,10 @@ func main() {
 	flag.Parse()
 
 	ls := &todo_cli.TodoList{}
+
+	if _, err := os.Stat(fileName); err != nil {
+		os.Create(fileName)
+	}
 
 	if err := ls.Open(fileName); err != nil {
 		fmt.Fprintln(os.Stderr, err)
