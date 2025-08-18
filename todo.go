@@ -67,9 +67,9 @@ func (l *TodoList) Open(filename string) error {
 		return fmt.Errorf("unable to read file")
 	}
 
-	if err := json.Unmarshal(file, l); err != nil {
-		return fmt.Errorf("failed to parse JSON from %q: %w", filename, err)
+	if len(file) == 0 {
+		return nil
 	}
 
-	return nil
+	return json.Unmarshal(file, l)
 }
