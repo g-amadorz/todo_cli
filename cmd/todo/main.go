@@ -4,26 +4,27 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"todo_cli"
+	"todo"
 )
 
-const fileName = ".todos.json"
+const defaultFileName = ".todos.json"
 
 func main() {
 	list := flag.Bool("list", false, "List all the Todos in a Todo List")
 	complete := flag.Int("complete", 0, "Mark the given index as a complete Todo and remove from")
-	add := flag.String("add", "", "Add a new Todo with the given task name")
+	task := flag.String("task", "", "Add a new Todo with the given task name")
 	delete := flag.Int("delete", 0, "Remove the index provided from the Todo List")
+	todoListName := flag.String("open", defaultFileName, "If provided open given todo list file")
 
 	flag.Parse()
 
-	ls := &todo_cli.TodoList{}
+	ls := &todo.TodoList{}
 
-	if _, err := os.Stat(fileName); err != nil {
-		os.Create(fileName)
+	if _, err := os.Stat(*todoListName); err != nil {
+		os.Create(defaultFileName)
 	}
 
-	if err := ls.Open(fileName); err != nil {
+	if err := ls.Open(*todoListName); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -39,19 +40,19 @@ func main() {
 		}
 	case *complete > 0:
 		ls.Complete(*complete)
-		if err := ls.Save(fileName); err != nil {
+		if err := ls.Save(*todoListName); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
-	case *add != "":
-		ls.Add(*add)
-		if err := ls.Save(fileName); err != nil {
+	case *task != "":
+		ls.Add(*task)
+		if err := ls.Save(*todoListName); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
 	case *delete > 0:
 		ls.Delete(*delete)
-		if err := ls.Save(fileName); err != nil {
+		if err := ls.Save(*todoListName); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
