@@ -73,3 +73,13 @@ func (l *TodoList) Open(filename string) error {
 
 	return json.Unmarshal(file, l)
 }
+
+func (l *TodoList) Create(filename string) error {
+	_, err := os.Create("." + filename)
+
+	if err != nil {
+		return fmt.Errorf("unable to create new file: %s", filename)
+	}
+
+	return nil
+}
