@@ -1,3 +1,3 @@
-module todo_cli
+module todo
 
 go 1.24.6

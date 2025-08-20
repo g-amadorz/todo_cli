@@ -1,13 +1,13 @@
-package todo_cli_test
+package todo_test
 
 import (
 	"os"
 	"testing"
-	"todo_cli"
+	"todo"
 )
 
 func TestAdd(t *testing.T) {
-	ls := todo_cli.TodoList{}
+	ls := todo.TodoList{}
 
 	taskName := "Mow the lawn"
 
@@ -23,7 +23,7 @@ func TestAdd(t *testing.T) {
 }
 
 func TestComplete(t *testing.T) {
-	ls := todo_cli.TodoList{}
+	ls := todo.TodoList{}
 
 	taskName1 := "Go get milk"
 	taskName2 := "Farm some minions"
@@ -55,7 +55,7 @@ func TestComplete(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	ls := todo_cli.TodoList{}
+	ls := todo.TodoList{}
 
 	task := "Go swimming"
 
@@ -79,8 +79,8 @@ func TestDelete(t *testing.T) {
 }
 
 func TestSaveOpen(t *testing.T) {
-	ls0 := todo_cli.TodoList{}
-	ls1 := todo_cli.TodoList{}
+	ls0 := todo.TodoList{}
+	ls1 := todo.TodoList{}
 
 	tasks := []string{
 		"Go on a run",

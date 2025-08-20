@@ -1,4 +1,5 @@
-package todo_cli
+// Package todo..
+package todo
 
 import (
 	"encoding/json"

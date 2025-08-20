@@ -10,7 +10,8 @@ import (
 
 var (
 	binName  = "todo"
-	fileName = ".todos.json"
+	fileName = ".test_todos.json"
+	testName = ".today_todo.json"
 )
 
 func TestMain(m *testing.M) {
@@ -58,6 +59,14 @@ func TestTodo(t *testing.T) {
 
 		if string(out) != expected {
 			t.Errorf("expected %s, got %s", expected, string(out))
+		}
+
+	})
+
+	t.Run("Provide TodoList name", func(t *testing.T) {
+		cmd := exec.Command(cmdPath, "-open", testName)
+		if err := cmd.Run(); err != nil {
+			t.Fatal(err)
 		}
 
 	})
