@@ -11,7 +11,6 @@ import (
 var (
 	binName  = "todo"
 	fileName = ".test_todos.json"
-	testName = ".today_todo.json"
 )
 
 func TestMain(m *testing.M) {
@@ -43,14 +42,14 @@ func TestTodo(t *testing.T) {
 	cmdPath := filepath.Join(dir, binName)
 
 	t.Run("Add new tasks", func(t *testing.T) {
-		cmd := exec.Command(cmdPath, "-task", task)
+		cmd := exec.Command(cmdPath, "-name", fileName, "-task", task)
 		if err := cmd.Run(); err != nil {
 			t.Fatal(err)
 		}
 	})
 
 	t.Run("List all task", func(t *testing.T) {
-		cmd := exec.Command(cmdPath, "-list")
+		cmd := exec.Command(cmdPath, "-name", fileName, "-list")
 		out, err := cmd.CombinedOutput()
 		if err != nil {
 			t.Fatal(err)
