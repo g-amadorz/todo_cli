@@ -15,7 +15,20 @@ type Todo struct {
 	CompletedAt time.Time
 }
 
-type TodoList []Todo
+type TodoList struct {
+	Name  string
+	Todos []Todo
+}
+
+//type TodoList []Todo
+
+func NewTodoList(todoListName string) TodoList {
+	todoList := TodoList{
+		Name:  todoListName,
+		Todos: []Todo{},
+	}
+	return todoList
+}
 
 func (l *TodoList) Add(taskName string) {
 	todo := Todo{
@@ -25,15 +38,15 @@ func (l *TodoList) Add(taskName string) {
 		CompletedAt: time.Time{},
 	}
 
-	*l = append(*l, todo)
+	l.Todos = append(l.Todos, todo)
 }
 
 func (l *TodoList) Complete(todo int) error {
-	if len(*l) < todo || todo < 1 {
+	if len(l.Todos) < todo || todo < 1 {
 		return fmt.Errorf("Todo: %d was unable to be completed", todo)
 	}
 
-	ls := *l
+	ls := l.Todos
 
 	ls[todo-1].Completed = true
 	ls[todo-1].CompletedAt = time.Now()
@@ -42,13 +55,13 @@ func (l *TodoList) Complete(todo int) error {
 }
 
 func (l *TodoList) Delete(todo int) error {
-	if len(*l) < todo || todo < 1 {
+	if len(l.Todos) < todo || todo < 1 {
 		return fmt.Errorf("Todo: %d was unable to be deleted", todo)
 	}
 
-	ls := *l
+	ls := l.Todos
 
-	*l = append(ls[:todo-1], ls[todo:]...)
+	l.Todos = append(ls[:todo-1], ls[todo:]...)
 
 	return nil
 }
@@ -73,14 +86,4 @@ func (l *TodoList) Open(filename string) error {
 	}
 
 	return json.Unmarshal(file, l)
-}
-
-func (l *TodoList) Create(filename string) error {
-	_, err := os.Create("." + filename)
-
-	if err != nil {
-		return fmt.Errorf("unable to create new file: %s", filename)
-	}
-
-	return nil
 }
