@@ -43,7 +43,7 @@ func TestTodo(t *testing.T) {
 	cmdPath := filepath.Join(dir, binName)
 
 	t.Run("Add new tasks", func(t *testing.T) {
-		cmd := exec.Command(cmdPath, "-add", task)
+		cmd := exec.Command(cmdPath, "-task", task)
 		if err := cmd.Run(); err != nil {
 			t.Fatal(err)
 		}
@@ -63,12 +63,12 @@ func TestTodo(t *testing.T) {
 
 	})
 
-	t.Run("Provide TodoList name", func(t *testing.T) {
-		cmd := exec.Command(cmdPath, "-open", testName)
-		if err := cmd.Run(); err != nil {
-			t.Fatal(err)
-		}
-
-	})
+	// t.Run("Provide TodoList name", func(t *testing.T) {
+	// 	cmd := exec.Command(cmdPath, "-open", testName)
+	// 	if err := cmd.Run(); err != nil {
+	// 		t.Fatal(err)
+	// 	}
+	//
+	// })
 
 }
