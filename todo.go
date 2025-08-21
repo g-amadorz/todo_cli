@@ -87,3 +87,15 @@ func (l *TodoList) Open(filename string) error {
 
 	return json.Unmarshal(file, l)
 }
+
+func (l *TodoList) List() {
+	fmt.Println(l.Name)
+
+	for i, item := range l.Todos {
+		check := "☐"
+		if item.Completed {
+			check = "☑"
+		}
+		fmt.Printf("%d: %s %s\n", i+1, item.Task, check)
+	}
+}

@@ -7,7 +7,7 @@ import (
 	"todo"
 )
 
-const defaultFileName = ".todos.json"
+const defaultFileName = ".todos"
 
 func main() {
 	list := flag.Bool("list", false, "List all the Todos in a Todo List")
@@ -18,7 +18,9 @@ func main() {
 
 	flag.Parse()
 
-	ls := &todo.TodoList{}
+	ls := todo.NewTodoList(*fileName)
+
+	*fileName = *fileName + ".json"
 
 	if _, err := os.Stat(*fileName); err != nil {
 		os.Create(*fileName)
@@ -31,13 +33,7 @@ func main() {
 
 	switch {
 	case *list:
-		for i, item := range ls.Todos {
-			check := "☐"
-			if item.Completed {
-				check = "☑"
-			}
-			fmt.Printf("%d: %s %s\n", i+1, item.Task, check)
-		}
+		ls.List()
 	case *complete > 0:
 		ls.Complete(*complete)
 		if err := ls.Save(*fileName); err != nil {
